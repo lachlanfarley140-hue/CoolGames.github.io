@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Drift Racer - Cool Games</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:#0a0a0a; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; font-family:Arial,sans-serif; color:white; }
+    h2 { color:#c9a84c; margin-bottom:10px; font-size:1.5em; }
+    canvas { border:2px solid #c9a84c; border-radius:8px; background:#1a1a0a; }
+    #ui { display:flex; gap:40px; margin-bottom:10px; font-size:1em; color:#c9a84c; }
+    #msg { margin-top:10px; color:#888; font-size:0.85em; }
+    a.back { margin-bottom:14px; color:#c9a84c; text-decoration:none; font-size:0.9em; }
+    a.back:hover { text-decoration:underline; }
+  </style>
+</head>
+<body>
+  <a class="back" href="../../index.html">← Back to games</a>
+  <h2>🚗 Drift Racer</h2>
+  <div id="ui"><span>Score: <b id="score">0</b></span><span>Best: <b id="best">0</b></span><span>Speed: <b id="spd">0</b></span></div>
+  <canvas id="c" width="600" height="500"></canvas>
+  <div id="msg">Arrow keys or WASD to drive. Drift on corners to score!</div>
+<script>
+const c=document.getElementById('c'),ctx=c.getContext('2d');
+let score=0,best=0,keys={};
+const car={x:300,y:400,angle:0,vx:0,vy:0,speed:0,drift:0};
+const track=[
+  {x:300,y:430,r:80},{x:180,y:350,r:70},{x:120,y:220,r:90},
+  {x:220,y:110,r:70},{x:380,y:90,r:80},{x:490,y:180,r:90},
+  {x:500,y:320,r:70},{x:400,y:410,r:60}
+];
+let driftScore=0,driftTimer=0;
+document.addEventListener('keydown',e=>{keys[e.key]=true;e.preventDefault();});
+document.addEventListener('keyup',e=>{keys[e.key]=false;});
+
+function update(){
+  const acc=keys['ArrowUp']||keys['w']?0.3:keys['ArrowDown']||keys['s']?-0.15:0;
+  const turn=keys['ArrowLeft']||keys['a']?-1:keys['ArrowRight']||keys['d']?1:0;
+  car.speed+=acc;
+  car.speed*=0.96;
+  car.speed=Math.max(-3,Math.min(8,car.speed));
+  const grip=0.75;
+  car.angle+=turn*(0.04+Math.abs(car.speed)*0.008);
+  const tx=Math.sin(car.angle)*car.speed;
+  const ty=-Math.cos(car.angle)*car.speed;
+  car.vx=car.vx*(1-grip)+tx*grip;
+  car.vy=car.vy*(1-grip)+ty*grip;
+  car.drift=Math.sqrt((car.vx-tx)**2+(car.vy-ty)**2);
+  car.x+=car.vx; car.y+=car.vy;
+  car.x=Math.max(20,Math.min(580,car.x));
+  car.y=Math.max(20,Math.min(480,car.y));
+  if(car.drift>1.5&&Math.abs(car.speed)>2){
+    driftScore+=car.drift*0.5;
+    driftTimer=60;
+  }
+  if(driftTimer>0){driftTimer--;if(driftTimer===0){score+=Math.floor(driftScore);driftScore=0;if(score>best)best=score;}}
+  document.getElementById('score').textContent=score;
+  document.getElementById('best').textContent=best;
+  document.getElementById('spd').textContent=Math.abs(car.speed).toFixed(1);
+}
+
+function drawTrack(){
+  ctx.strokeStyle='#2a2a00';ctx.lineWidth=60;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();
+  track.forEach((p,i)=>{i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});
+  ctx.closePath();ctx.stroke();
+  ctx.strokeStyle='#3a3500';ctx.lineWidth=58;ctx.stroke();
+  ctx.setLineDash([20,20]);ctx.strokeStyle='#c9a84c';ctx.lineWidth=1;ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+function drawCar(){
+  ctx.save();ctx.translate(car.x,car.y);ctx.rotate(car.angle);
+  if(car.drift>1.5){
+    ctx.fillStyle='rgba(200,150,50,0.15)';
+    ctx.fillRect(-18,-30,8,40);ctx.fillRect(10,-30,8,40);
+  }
+  ctx.fillStyle='#c9a84c';ctx.fillRect(-10,-18,20,36);
+  ctx.fillStyle='#222';ctx.fillRect(-10,-18,20,8);ctx.fillRect(-10,10,20,8);
+  ctx.fillStyle='#111';ctx.fillRect(-14,-14,6,12);ctx.fillRect(8,-14,6,12);
+  ctx.fillRect(-14,8,6,12);ctx.fillRect(8,8,6,12);
+  ctx.restore();
+}
+
+function drawHUD(){
+  if(driftScore>0){
+    ctx.fillStyle='#c9a84c';ctx.font='bold 18px Arial';ctx.textAlign='center';
+    ctx.fillText(`DRIFT! +${Math.floor(driftScore)}`,car.x,car.y-40);
+  }
+}
+
+function loop(){
+  ctx.clearRect(0,0,600,500);
+  ctx.fillStyle='#0d0d0d';ctx.fillRect(0,0,600,500);
+  drawTrack();drawCar();drawHUD();
+  update();requestAnimationFrame(loop);
+}
+loop();
+</script>
+</body>
+</html>
