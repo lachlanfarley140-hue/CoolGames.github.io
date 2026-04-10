@@ -3,300 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cool Games - Play Now!</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 40px;
-        }
-        
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-        
-        .back-button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            transition: 0.3s;
-        }
-        
-        .back-button:hover {
-            background-color: rgba(255, 255, 255, 0.4);
-        }
-        
-        .games-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-        
-        .game-card {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .game-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-        
-        .game-icon {
-            font-size: 3em;
-            margin-bottom: 15px;
-        }
-        
-        .game-card h2 {
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-        
-        .game-card p {
-            color: #666;
-            margin-bottom: 15px;
-        }
-        
-        .play-btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-        
-        .play-btn:hover {
-            opacity: 0.9;
-            transform: scale(1.05);
-        }
-    </style>
+    <title>Cool Games</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <a href="index.html" class="back-button">← Back Home</a>
-    
-    <div class="header">
-        <h1>🎮 Cool Games</h1>
-        <p>Pick a game and have fun!</p>
-    </div>
-    
-    <div class="games-container">
-        <!-- Game 1: Rock Paper Scissors -->
-        <div class="game-card">
-            <div class="game-icon">✊</div>
-            <h2>Rock Paper Scissors</h2>
-            <p>Classic game! Beat the computer in this timeless battle.</p>
-            <button class="play-btn" onclick="playRockPaperScissors()">Play Now</button>
-        </div>
-        
-        <!-- Game 2: Number Guessing -->
-        <div class="game-card">
-            <div class="game-icon">🎯</div>
-            <h2>Number Guessing</h2>
-            <p>Guess the secret number between 1 and 100!</p>
-            <button class="play-btn" onclick="playNumberGuess()">Play Now</button>
-        </div>
-        
-        <!-- Game 3: Memory Match -->
-        <div class="game-card">
-            <div class="game-icon">🧠</div>
-            <h2>Memory Match</h2>
-            <p>Test your memory by matching pairs of cards!</p>
-            <button class="play-btn" onclick="playMemoryMatch()">Play Now</button>
-        </div>
-        
-        <!-- Game 4: Coin Flip -->
-        <div class="game-card">
-            <div class="game-icon">🪙</div>
-            <h2>Coin Flip</h2>
-            <p>Flip a coin and test your luck!</p>
-            <button class="play-btn" onclick="playCoinFlip()">Play Now</button>
-        </div>
-        
-        <!-- Game 5: Dice Roller -->
-        <div class="game-card">
-            <div class="game-icon">🎲</div>
-            <h2>Dice Roller</h2>
-            <p>Roll the dice and see what luck brings you!</p>
-            <button class="play-btn" onclick="playDiceRoller()">Play Now</button>
-        </div>
-        
-        <!-- Game 6: Trivia Quiz -->
-        <div class="game-card">
-            <div class="game-icon">❓</div>
-            <h2>Quick Trivia</h2>
-            <p>Answer fun trivia questions and test your knowledge!</p>
-            <button class="play-btn" onclick="playTrivia()">Play Now</button>
-        </div>
-    </div>
-
-    <script>
-        function playRockPaperScissors() {
-            const choices = ['Rock', 'Paper', 'Scissors'];
-            const userChoice = prompt('Choose: Rock, Paper, or Scissors?');
-            
-            if (!userChoice) return;
-            
-            const computerChoice = choices[Math.floor(Math.random() * choices.length)];
-            let result = '';
-            
-            if (userChoice.toLowerCase() === computerChoice.toLowerCase()) {
-                result = "It's a tie!";
-            } else if (
-                (userChoice.toLowerCase() === 'rock' && computerChoice === 'Scissors') ||
-                (userChoice.toLowerCase() === 'paper' && computerChoice === 'Rock') ||
-                (userChoice.toLowerCase() === 'scissors' && computerChoice === 'Paper')
-            ) {
-                result = 'You win!';
-            } else {
-                result = 'You lose!';
-            }
-            
-            alert(`You chose: ${userChoice}\nComputer chose: ${computerChoice}\n\n${result}`);
-        }
-        
-        function playNumberGuess() {
-            const secretNumber = Math.floor(Math.random() * 100) + 1;
-            let guess = null;
-            let attempts = 0;
-            
-            while (guess !== secretNumber) {
-                guess = parseInt(prompt('Guess a number between 1 and 100:'));
-                
-                if (isNaN(guess)) {
-                    alert('Please enter a valid number!');
-                    continue;
-                }
-                
-                attempts++;
-                
-                if (guess < secretNumber) {
-                    alert('Too low! Try again.');
-                } else if (guess > secretNumber) {
-                    alert('Too high! Try again.');
-                } else {
-                    alert(`🎉 You got it! The number was ${secretNumber}.\nAttempts: ${attempts}`);
-                }
-            }
-        }
-        
-        function playMemoryMatch() {
-            alert('🧠 Memory Match Game\n\nCards will appear with symbols. Match pairs!\n\nClick OK to start!');
-            const cards = ['🍕', '🍔', '🍟', '🌭', '🍕', '🍔', '🍟', '🌭'];
-            const shuffled = cards.sort(() => Math.random() - 0.5);
-            
-            let revealed = [];
-            let matched = 0;
-            
-            while (matched < 4) {
-                const gameState = shuffled.map((card, i) => {
-                    if (revealed.includes(i)) return card;
-                    return '❓';
-                }).join(' ');
-                
-                alert(gameState + '\n\nRemaining pairs: ' + (4 - matched));
-                
-                const card1 = parseInt(prompt('Pick first card (1-8):')) - 1;
-                if (card1 < 0 || card1 > 7) continue;
-                
-                const card2 = parseInt(prompt('Pick second card (1-8):')) - 1;
-                if (card2 < 0 || card2 > 7 || card1 === card2) continue;
-                
-                if (shuffled[card1] === shuffled[card2]) {
-                    revealed.push(card1, card2);
-                    matched++;
-                    alert('✅ Match found!');
-                } else {
-                    alert('❌ No match. Try again!');
-                }
-            }
-            
-            alert('🎉 You completed the game!');
-        }
-        
-        function playCoinFlip() {
-            const result = Math.random() < 0.5 ? 'Heads' : 'Tails';
-            const userGuess = prompt('Guess: Heads or Tails?');
-            
-            if (!userGuess) return;
-            
-            if (userGuess.toLowerCase() === result.toLowerCase()) {
-                alert(`🪙 The coin landed on: ${result}\n\n🎉 You guessed correctly!`);
-            } else {
-                alert(`🪙 The coin landed on: ${result}\n\n❌ You guessed wrong!`);
-            }
-        }
-        
-        function playDiceRoller() {
-            const rolls = [];
-            const numDice = parseInt(prompt('How many dice do you want to roll? (1-6):'));
-            
-            if (isNaN(numDice) || numDice < 1 || numDice > 6) {
-                alert('Please enter a number between 1 and 6!');
-                return;
-            }
-            
-            for (let i = 0; i < numDice; i++) {
-                rolls.push(Math.floor(Math.random() * 6) + 1);
-            }
-            
-            const total = rolls.reduce((a, b) => a + b, 0);
-            alert(`🎲 Dice Results:\n${rolls.join(', ')}\n\nTotal: ${total}`);
-        }
-        
-        function playTrivia() {
-            const questions = [
-                { q: 'What is the capital of France?', a: 'paris', correct: 'Paris' },
-                { q: 'What is 2 + 2?', a: '4', correct: '4' },
-                { q: 'What color is the sky?', a: 'blue', correct: 'Blue' },
-                { q: 'What is the largest planet?', a: 'jupiter', correct: 'Jupiter' },
-                { q: 'How many continents are there?', a: '7', correct: '7' }
-            ];
-            
-            let score = 0;
-            for (let i = 0; i < questions.length; i++) {
-                const answer = prompt(`Question ${i + 1}/5:\n${questions[i].q}`);
-                if (answer && answer.toLowerCase() === questions[i].a.toLowerCase()) {
-                    score++;
-                    alert('✅ Correct!');
-                } else {
-                    alert(`❌ Wrong! The answer is ${questions[i].correct}`);
-                }
-            }
-            
-            alert(`🎯 Quiz Complete!\n\nYour Score: ${score}/5`);
-        }
-        
-        console.log('Games page loaded!');
-    </script>
+    <header>
+        <h1>Welcome to Cool Games</h1>
+    </header>
+    <main>
+        <section id="casino-games">
+            <h2>Casino Games</h2>
+            <article id="blackjack">
+                <h3>Blackjack</h3>
+                <p>Experience the thrill of the casino with our realistic blackjack game.</p>
+            </article>
+            <article id="slots">
+                <h3>Slots</h3>
+                <p>Spin the reels and try your luck with our exciting slot machine.</p>
+            </article>
+            <article id="roulette">
+                <h3>Roulette</h3>
+                <p>Place your bets and watch the wheel spin in our classic roulette game.</p>
+            </article>
+        </section>
+        <section id="rpg-game">
+            <h2>RPG Game</h2>
+            <article>
+                <h3>Epic Quest</h3>
+                <p>Embark on an epic adventure in our immersive RPG game.</p>
+            </article>
+        </section>
+        <section id="car-racing">
+            <h2>Car Racing Game</h2>
+            <article>
+                <h3>Fast Track</h3>
+                <p>Race against the clock in our high-speed car racing game.</p>
+            </article>
+        </section>
+        <section id="space-shooter">
+            <h2>Space Shooter</h2>
+            <article>
+                <h3>Galactic Battle</h3>
+                <p>Defend the galaxy in our thrilling space shooter game.</p>
+            </article>
+        </section>
+        <section id="poker">
+            <h2>Poker</h2>
+            <article>
+                <h3>Texas Hold'em</h3>
+                <p>Join the table and outsmart your opponents in our poker game.</p>
+            </article>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2026 Cool Games. All rights reserved.</p>
+    </footer>
 </body>
 </html>
